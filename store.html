@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Магазин</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .profile {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .button {
+            flex: 1;
+            padding: 15px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+        }
+    </style>
+    <script>
+        // Инициализация Telegram WebApp
+        function initTelegram() {
+            if (window.Telegram && Telegram.WebApp) {
+                Telegram.WebApp.expand();
+                
+                // Получаем данные пользователя
+                const user = Telegram.WebApp.initDataUnsafe.user;
+                
+                if (user) {
+                    // Заполняем профиль
+                    document.getElementById('profile-name').textContent = 
+                        `${user.first_name || ''} ${user.last_name || ''}`.trim();
+                    
+                    if (user.photo_url) {
+                        document.getElementById('profile-pic').innerHTML = 
+                            `<img src="${user.photo_url}" style="width:100px;border-radius:50%">`;
+                    }
+                }
+            }
+        }
+        
+        // Отправка данных в бота
+        function sendData(action) {
+            if (window.Telegram && Telegram.WebApp) {
+                Telegram.WebApp.sendData(JSON.stringify({action: action}));
+            }
+        }
+        
+        // Инициализация при загрузке
+        window.onload = initTelegram;
+    </script>
+</head>
+<body>
+    <div class="profile" onclick="sendData('profile')">
+        <div id="profile-pic">👤</div>
+        <h2 id="profile-name">Профиль</h2>
+    </div>
+    
+    <div class="buttons">
+        <button class="button" onclick="sendData('cart')">Корзина</button>
+        <button class="button" onclick="sendData('lottery')">Лотереи</button>
+    </div>
+</body>
+</html>
