@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Магазин</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .profile {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 15px;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        .name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #2481cc;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .button:hover {
+            background: #1c6bb0;
+        }
+        .lottery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .lottery-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .lottery-image {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .seat-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .seat {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f0f0;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .seat.booked {
+            background: #ff6b6b;
+            cursor: not-allowed;
+        }
+        .seat.selected {
+            background: #4CAF50;
+            color: white;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        let currentUserId = new URLSearchParams(window.location.search).get('user_id');
+        let isAdmin = currentUserId === '123456789'; // Ваш ID админа
+        let currentLottery = null;
+        let selectedSeat = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Инициализация профиля
+            const profileName = document.getElementById('profile-name');
+            profileName.textContent = isAdmin ? 'Администратор' : 'Покупатель';
+
+            // Загрузка лотерей
+            if (isAdmin) {
+                document.getElementById('admin-panel').classList.remove('hidden');
+            } else {
+                loadLotteries();
+            }
+        });
+
+        function loadLotteries() {
+            // Здесь должен быть запрос к вашему API для получения лотерей
+            // Для примера используем мок-данные
+            const mockLotteries = [
+                {
+                    id: 1,
+                    title: "Лотерея 1",
+                    description: "Описание лотереи 1",
+                    price: 1000,
+                    total_seats: 10,
+                    photo: "https://via.placeholder.com/300"
+                },
+                {
+                    id: 2,
+                    title: "Лотерея 2",
+                    description: "Описание лотереи 2",
+                    price: 2000,
+                    total_seats: 15,
+                    photo: "https://via.placeholder.com/300"
+                }
+            ];
+
+            const grid = document.getElementById('lottery-grid');
+            grid.innerHTML = '';
+
+            mockLotteries.forEach(lottery => {
+                const card = document.createElement('div');
+                card.className = 'lottery-card';
+                card.innerHTML = `
+                    <img src="${lottery.photo}" class="lottery-image">
+                    <h3>${lottery.title}</h3>
+                    <p>${lottery.description}</p>
+                    <p>Цена: ${lottery.price} руб.</p>
+                    <button onclick="viewLottery(${lottery.id})">Участвовать</button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function viewLottery(lotteryId) {
+            // Здесь должен быть запрос к API для получения данных о лотерее
+            currentLottery = {
+                id: 1,
+                title: "Лотерея 1",
+                description: "Описание лотереи 1",
+                price: 1000,
+                total_seats: 10,
+                photo: "https://via.placeholder.com/300"
+            };
+
+            document.getElementById('lottery-view').classList.remove('hidden');
+            document.getElementById('lottery-title').textContent = currentLottery.title;
+            document.getElementById('lottery-description').textContent = currentLottery.description;
+            document.getElementById('lottery-price').textContent = `Цена: ${currentLottery.price} руб.`;
+            document.getElementById('lottery-image').src = currentLottery.photo;
+
+            // Генерация мест
+            const seatsContainer = document.getElementById('seats-container');
+            seatsContainer.innerHTML = '';
+
+            for (let i = 1; i <= currentLottery.total_seats; i++) {
+                const seat = document.createElement('div');
+                seat.className = 'seat';
+                seat.textContent = i;
+                seat.onclick = function() {
+                    if (!seat.classList.contains('booked')) {
+                        document.querySelectorAll('.seat').forEach(s => s.classList.remove('selected'));
+                        seat.classList.add('selected');
+                        selectedSeat = i;
+                    }
+                };
+                seatsContainer.appendChild(seat);
+            }
+        }
+
+        function bookSeat() {
+            if (!selectedSeat) {
+                alert('Выберите место!');
+                return;
+            }
+
+            if (window.Telegram && Telegram.WebApp) {
+                Telegram.WebApp.sendData(JSON.stringify({
+                    action: 'book_seat',
+                    lottery_id: currentLottery.id,
+                    seat_number: selectedSeat
+                }));
+            } else {
+                alert(`Место ${selectedSeat} забронировано!`);
+            }
+        }
+
+        function createLottery() {
+            const title = document.getElementById('lottery-title-input').value;
+            const description = document.getElementById('lottery-description-input').value;
+            const price = document.getElementById('lottery-price-input').value;
+            const seats = document.getElementById('lottery-seats-input').value;
+            const photo = document.getElementById('lottery-photo-input').value || "https://via.placeholder.com/300";
+
+            if (!title || !description || !price || !seats) {
+                alert('Заполните все поля!');
+                return;
+            }
+
+            if (window.Telegram && Telegram.WebApp) {
+                Telegram.WebApp.sendData(JSON.stringify({
+                    action: 'create_lottery',
+                    title: title,
+                    description: description,
+                    price: parseFloat(price),
+                    seats: parseInt(seats),
+                    photo: photo
+                }));
+            } else {
+                alert('Лотерея создана!');
+                document.getElementById('create-lottery-form').reset();
+            }
+        }
+
+        function showCreateForm() {
+            document.getElementById('create-lottery-form').classList.remove('hidden');
+        }
+    </script>
+</head>
+<body>
+    <div class="profile">
+        <div class="avatar">👤</div>
+        <div class="name" id="profile-name">Загрузка...</div>
+    </div>
+
+    <button class="button" onclick="window.location.href='index.html'">← Назад</button>
+
+    <div id="admin-panel" class="hidden">
+        <h2>Панель администратора</h2>
+        <button class="button" onclick="showCreateForm()">Создать лотерею</button>
+        
+        <div id="create-lottery-form" class="hidden">
+            <div class="form-group">
+                <label for="lottery-title-input">Название:</label>
+                <input type="text" id="lottery-title-input" required>
+            </div>
+            <div class="form-group">
+                <label for="lottery-description-input">Описание:</label>
+                <textarea id="lottery-description-input" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="lottery-price-input">Цена (руб):</label>
+                <input type="number" id="lottery-price-input" required>
+            </div>
+            <div class="form-group">
+                <label for="lottery-seats-input">Количество мест:</label>
+                <input type="number" id="lottery-seats-input" required>
+            </div>
+            <div class="form-group">
+                <label for="lottery-photo-input">URL фото (необязательно):</label>
+                <input type="text" id="lottery-photo-input">
+            </div>
+            <button class="button" onclick="createLottery()">Создать</button>
+        </div>
+    </div>
+
+    <div id="user-view">
+        <h2>Доступные лотереи</h2>
+        <div id="lottery-grid" class="lottery-grid"></div>
+        
+        <div id="lottery-view" class="hidden">
+            <h2 id="lottery-title"></h2>
+            <img id="lottery-image" class="lottery-image">
+            <p id="lottery-description"></p>
+            <p id="lottery-price"></p>
+            
+            <h3>Выберите место:</h3>
+            <div id="seats-container" class="seat-grid"></div>
+            
+            <button class="button" onclick="bookSeat()">Оплатить</button>
+            <button class="button" onclick="document.getElementById('lottery-view').classList.add('hidden')">Назад</button>
+        </div>
+    </div>
+</body>
+</html>
