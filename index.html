@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ГЛОБУС</title>
+    <title>ГЛОБУС - Интернет-магазин</title>
     <style>
         * {
             box-sizing: border-box;
@@ -34,6 +34,12 @@
             width: 100%;
             position: relative;
             padding: 0 50px;
+        }
+        
+        .store-title {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
         }
         
         .cart-icon {
@@ -240,12 +246,12 @@
             background-color: #27ae60;
         }
         
-        .btn-secondary {
+        .btn-back {
             background-color: #3498db;
             color: white;
         }
         
-        .btn-secondary:hover {
+        .btn-back:hover {
             background-color: #2980b9;
         }
         
@@ -362,7 +368,7 @@
             font-size: 14px;
         }
         
-        .form-group input, .form-group textarea {
+        .form-group input {
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
@@ -385,6 +391,10 @@
             
             .product-price {
                 font-size: 14px;
+            }
+            
+            .store-title {
+                font-size: 20px;
             }
         }
         
@@ -430,7 +440,7 @@
 <body>
     <header>
         <div class="header-content">
-            <h1 style="font-size: 18px; margin: 0;">ГЛОБУС</h1>
+            <div class="store-title">ГЛОБУС</div>
             <div class="cart-icon" onclick="openCartModal()">
                 🛒
                 <span class="cart-count" id="cartCount">0</span>
@@ -471,8 +481,8 @@
                     <button class="btn btn-primary" onclick="addToCart(currentProduct)">
                         Добавить в корзину
                     </button>
-                    <button class="btn btn-secondary" onclick="closeModal()">
-                        Обратно
+                    <button class="btn btn-back" onclick="closeModal()">
+                        ← Назад
                     </button>
                 </div>
             </div>
@@ -499,8 +509,8 @@
                     <button class="btn btn-primary" onclick="openCheckoutModal()">
                         Оформить заказ
                     </button>
-                    <button class="btn btn-secondary" onclick="closeCartModal()">
-                        Обратно
+                    <button class="btn btn-back" onclick="closeCartModal()">
+                        ← Назад
                     </button>
                 </div>
             </div>
@@ -522,31 +532,16 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" required>
-                    </div>
-                    
-                    <div class="form-group">
                         <label for="phone">Телефон</label>
                         <input type="tel" id="phone" required>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="address">Адрес доставки</label>
-                        <textarea id="address" rows="3" required></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="comment">Комментарий к заказу</label>
-                        <textarea id="comment" rows="3"></textarea>
-                    </div>
-                    
                     <div class="modal-actions">
                         <button type="button" class="btn btn-primary" onclick="processPayment()">
-                            Оплатить
+                            Оплатить через ЮКассу
                         </button>
-                        <button type="button" class="btn btn-secondary" onclick="closeCheckoutModal()">
-                            Отмена
+                        <button type="button" class="btn btn-back" onclick="closeCheckoutModal()">
+                            ← Назад
                         </button>
                     </div>
                 </form>
@@ -559,43 +554,43 @@
         const products = [
             {
                 id: 1,
-                title: "Магазин ГЛОБУС",
-                price: 1,
+                title: "Смартфон XYZ",
+                price: 29999,
                 image: "https://via.placeholder.com/400x300?text=Смартфон+XYZ",
                 description: "Новый смартфон XYZ с экраном 6.5 дюймов, 128 ГБ памяти и тройной камерой."
             },
             {
                 id: 2,
-                title: "Магазин КРУГОЗОР",
-                price: 2,
+                title: "Ноутбук Ultra",
+                price: 54999,
                 image: "https://via.placeholder.com/400x300?text=Ноутбук+Ultra",
                 description: "Мощный ноутбук с процессором Intel Core i7, 16 ГБ оперативной памяти."
             },
             {
                 id: 3,
-                title: "Магазин ГЛОБУС 2",
-                price: 0,
+                title: "Наушники Pro",
+                price: 7999,
                 image: "https://via.placeholder.com/400x300?text=Наушники+Pro",
                 description: "Беспроводные наушники с активным шумоподавлением."
             },
             {
                 id: 4,
-                title: "Гравировка на ручке",
-                price: 129,
+                title: "Умные часы",
+                price: 12999,
                 image: "https://via.placeholder.com/400x300?text=Умные+часы",
                 description: "Умные часы с мониторингом здоровья и уведомлениями."
             },
             {
                 id: 5,
-                title: "Гравировка на брелке",
-                price: 429,
+                title: "Фотоаппарат Mirror",
+                price: 42999,
                 image: "https://via.placeholder.com/400x300?text=Фотоаппарат+Mirror",
                 description: "Зеркальный фотоаппарат с матрицей 24 МП."
             },
             {
                 id: 6,
-                title: "ПЕЧАТЬ ЛИЧНАЯ",
-                price: 199999999,
+                title: "Планшет Mini",
+                price: 19999,
                 image: "https://via.placeholder.com/400x300?text=Планшет+Mini",
                 description: "Компактный планшет с экраном 8 дюймов."
             }
@@ -839,12 +834,9 @@
         function processPayment() {
             const form = document.getElementById('checkoutForm');
             const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
             const phone = document.getElementById('phone').value;
-            const address = document.getElementById('address').value;
-            const comment = document.getElementById('comment').value;
             
-            if (!name || !email || !phone || !address) {
+            if (!name || !phone) {
                 showAlert('Пожалуйста, заполните все обязательные поля');
                 return;
             }
@@ -869,7 +861,6 @@
             addFormField(paymentForm, 'shopId', 'YOUR_SHOP_ID'); // Замените на ваш ID магазина
             addFormField(paymentForm, 'sum', total);
             addFormField(paymentForm, 'clientName', name);
-            addFormField(paymentForm, 'clientEmail', email);
             addFormField(paymentForm, 'clientPhone', phone);
             addFormField(paymentForm, 'orderId', generateOrderId());
             
