@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой Интернет-магазин</title>
+    <title>ГЛОБУС</title>
     <style>
         * {
             box-sizing: border-box;
@@ -472,7 +472,7 @@
                         Добавить в корзину
                     </button>
                     <button class="btn btn-secondary" onclick="closeModal()">
-                        Продолжить покупки
+                        Обратно
                     </button>
                 </div>
             </div>
@@ -500,7 +500,7 @@
                         Оформить заказ
                     </button>
                     <button class="btn btn-secondary" onclick="closeCartModal()">
-                        Продолжить покупки
+                        Обратно
                     </button>
                 </div>
             </div>
@@ -543,7 +543,7 @@
                     
                     <div class="modal-actions">
                         <button type="button" class="btn btn-primary" onclick="processPayment()">
-                            Оплатить через ЮКассу
+                            Оплатить
                         </button>
                         <button type="button" class="btn btn-secondary" onclick="closeCheckoutModal()">
                             Отмена
@@ -559,43 +559,43 @@
         const products = [
             {
                 id: 1,
-                title: "Смартфон XYZ",
-                price: 29999,
+                title: "Магазин ГЛОБУС",
+                price: 1,
                 image: "https://via.placeholder.com/400x300?text=Смартфон+XYZ",
                 description: "Новый смартфон XYZ с экраном 6.5 дюймов, 128 ГБ памяти и тройной камерой."
             },
             {
                 id: 2,
-                title: "Ноутбук Ultra",
-                price: 54999,
+                title: "Магазин КРУГОЗОР",
+                price: 2,
                 image: "https://via.placeholder.com/400x300?text=Ноутбук+Ultra",
                 description: "Мощный ноутбук с процессором Intel Core i7, 16 ГБ оперативной памяти."
             },
             {
                 id: 3,
-                title: "Наушники Pro",
-                price: 7999,
+                title: "Магазин ГЛОБУС 2",
+                price: 0,
                 image: "https://via.placeholder.com/400x300?text=Наушники+Pro",
                 description: "Беспроводные наушники с активным шумоподавлением."
             },
             {
                 id: 4,
-                title: "Умные часы",
-                price: 12999,
+                title: "Гравировка на ручке",
+                price: 129,
                 image: "https://via.placeholder.com/400x300?text=Умные+часы",
                 description: "Умные часы с мониторингом здоровья и уведомлениями."
             },
             {
                 id: 5,
-                title: "Фотоаппарат Mirror",
-                price: 42999,
+                title: "Гравировка на брелке",
+                price: 429,
                 image: "https://via.placeholder.com/400x300?text=Фотоаппарат+Mirror",
                 description: "Зеркальный фотоаппарат с матрицей 24 МП."
             },
             {
                 id: 6,
-                title: "Планшет Mini",
-                price: 19999,
+                title: "ПЕЧАТЬ ЛИЧНАЯ",
+                price: 199999999,
                 image: "https://via.placeholder.com/400x300?text=Планшет+Mini",
                 description: "Компактный планшет с экраном 8 дюймов."
             }
