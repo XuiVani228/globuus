@@ -467,7 +467,7 @@
                                 <input type="text" class="quantity-input" value="${inCart}" data-id="${id}" readonly>
                                 <button class="quantity-btn plus" data-id="${id}">+</button>
                             </div>
-                            <button class="add-to-cart" data-id="${id}">${inCart > 0 ? 'Изменить' : 'В корзину'}</button>
+                            <button class="add-to-cart" data-id="${id}">${inCart > 0 ? 'В корзину' : 'В корзину'}</button>
                         </div>
                     </div>
                 `;
@@ -618,16 +618,16 @@
             }
 
             const orderData = {
-                phone: phone,
-                address: address,
-                comment: comment,
-                items: Object.values(cart).map(item => ({
+                Телефон: phone,
+                Адрес: address,
+                Коментарий: comment,
+                Товар: Object.values(cart).map(item => ({
                     product_id: item.product_id,
                     quantity: item.quantity
                 })),
-                user_id: tg.initDataUnsafe.user?.id.toString() || 'unknown',
-                user_name: tg.initDataUnsafe.user?.first_name || 'Неизвестный',
-                username: tg.initDataUnsafe.user?.username ? `@${tg.initDataUnsafe.user.username}` : 'нет username'
+                id: tg.initDataUnsafe.user?.id.toString() || 'unknown',
+                Имя: tg.initDataUnsafe.user?.first_name || 'Неизвестный',
+                Имя: tg.initDataUnsafe.user?.username ? `@${tg.initDataUnsafe.user.username}` : 'нет username'
             };
 
             console.log('Отправка заказа:', orderData);
