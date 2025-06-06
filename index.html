@@ -574,16 +574,16 @@
             try {
                 // Формируем полные данные заказа
                 const fullOrderData = {
-                    phone: orderData.phone,
-                    address: orderData.address,
-                    comment: orderData.comment,
-                    items: Object.values(cart).map(item => ({
-                        product_id: item.product_id,
-                        quantity: item.quantity
+                    Телефон: orderData.phone,\n
+                    Адрес: orderData.address,
+                    Комментарий: orderData.comment,
+                    Товар: Object.values(cart).map(item => ({
+                        Продукт: item.product_id,
+                        Количество: item.quantity
                     })),
-                    user_id: tg.initDataUnsafe.user?.id.toString() || 'unknown',
-                    user_name: tg.initDataUnsafe.user?.first_name || 'Неизвестный',
-                    username: tg.initDataUnsafe.user?.username ? `@${tg.initDataUnsafe.user.username}` : 'нет username'
+                    Ваш_ID: tg.initDataUnsafe.user?.id.toString() || 'unknown',
+                    Имя: tg.initDataUnsafe.user?.first_name || 'Неизвестный',
+                    Имя: tg.initDataUnsafe.user?.username ? `@${tg.initDataUnsafe.user.username}` : 'нет username'
                 };
 
                 // Создаем текстовый файл с данными заказа
